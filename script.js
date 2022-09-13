@@ -1,7 +1,7 @@
 const APP = {
   TOKEN: "pk.2f18ebbf211350dd5e3f51dfe848b5d0",
-  SEARCHURL: `https://us1.locationiq.com/v1/search.php?format=json&`,
-  REVERSEURL: `https://us1.locationiq.com/v1/reverse.php?format=json&`,
+  SEARCHURL: `https://us1.locationiq.com/v1/search?format=json&`,
+  REVERSEURL: `https://us1.locationiq.com/v1/reverse?format=json&`,
   MAPURL: `https://maps.locationiq.com/v3/staticmap?`,
   data: null,
   init: () => {

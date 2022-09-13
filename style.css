@@ -1,5 +1,6 @@
 #map { 
     border: 0;
-    height: 100vh;
-
+    height: 50vh;
+    width: 50vh;
+    margin: 5rem auto;
  }

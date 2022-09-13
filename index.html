@@ -31,23 +31,22 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div id="map">
-      <form class="row g-3">
-        <div class="col-auto">
-          <label for="input" class="">Enter a location</label>
+    <div id="temp">
+      <!-- search bar right align -->
+      <div id="map"></div>
+      <div class="search">
+        <form id="user_input">
           <input
-            type="text"
-            class="form-control"
             id="inputLocation"
-            placeholder="Seattle"
+            type="text"
+            placeholder="Enter location"
+            name="search"
           />
-        </div>
-        <div class="col-auto">
-          <button id="search-btn" type="submit" class="btn btn-primary mb-3">
+          <button id="btn_seach" type="button" class="btn btn-secondary">
             Search
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
     <!-- Bootstrap JS -->
     <script

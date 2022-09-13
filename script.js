@@ -1,86 +1,59 @@
-// WARNING!!! Keep this
-document.getElementById("user_input_form").addEventListener("submit", (evt) => {
-  evt.preventDefault();
+var key = "pk.pk.2f18ebbf211350dd5e3f51dfe848b5d0"; //Insert your LocationIQ access token here
 
-  const userInput = document.getElementById("userInput").value;
+var coordinates = document.getElementById("coordinates");
 
-  //   clear user inputs from the form (for UX)
-  document.getElementById("user_input_form").reset();
-
-  const queryObject = userInput;
-
-  getUnsplash(queryObject);
-  //   clear user inputs from the form (for UX)
-  document.getElementById("user_input_form").reset();
-});
-
-// NOTE  keep 17 - 27. rename function
-function getUnsplash(queryObject) {
-  // access unsplash
-  const unsplashApiUrl = `https://api.unsplash.com/search/photos?query=${queryObject}&client_id=I0KY6f0IJGwRaM-mfOTJPEkkpZpQ9bzjYMziPuUADQE`;
-
-  fetch(unsplashApiUrl)
-    .then(function (response) {
-      return response.json();
+olms(
+  "map",
+  "https://tiles.locationiq.com/v3/streets/vector.json?key=" + key
+).then(function (map) {
+  //Set the view for this map
+  map.setView(
+    new ol.View({
+      center: ol.proj.fromLonLat([-122.42, 37.779]),
+      zoom: 12,
     })
-    .then(function (data) {
-      const photos = data.results;
+  );
 
-      // NOTE can delete below
-      for (let i = 1; i < 11; i++) {
-        //   const randIdx = Math.floor(Math.random() * 100);
-        // NOTE why this not work if we change photos.length = 1000?
-        let randIdx = Math.floor(Math.random() * photos.length);
-        const imgUrl = photos[randIdx].urls.thumb;
+  //to create a marker
+  var marker1 = new ol.Feature({
+    geometry: new ol.geom.Point(ol.proj.fromLonLat([-122.444733, 37.767443])),
+  });
 
-        //   document.getElementById(myimage).setAttribute("src", myimage);
-        // }
-        switch (i) {
-          case 1:
-            document.getElementById("imagep1").setAttribute("src", imgUrl);
-            break;
+  //to enhance style and add icon to the map
+  marker1.setStyle(
+    new ol.style.Style({
+      image: new ol.style.Icon({
+        scale: 0.5, //scale to adjust the proportion of the icon
+        src: "marker.png", //link of the icon
+      }),
+    })
+  );
 
-          case 2:
-            document.getElementById("imagep2").setAttribute("src", imgUrl);
-            break;
+  //Let’s include the markers and create a vector source with it
+  var vectorSource = new ol.source.Vector({
+    features: [marker1],
+  });
 
-          case 3:
-            document.getElementById("imagep3").setAttribute("src", imgUrl);
-            break;
+  //Let’s create a vector layer, with a source created above
+  var vectorLayer = new ol.layer.Vector({
+    source: vectorSource,
+  });
 
-          case 4:
-            document.getElementById("imagep4").setAttribute("src", imgUrl);
-            break;
+  map.addLayer(vectorLayer);
 
-          case 5:
-            document.getElementById("imagep5").setAttribute("src", imgUrl);
-            break;
+  var translate1 = new ol.interaction.Translate({
+    features: new ol.Collection([marker1]),
+  });
 
-          case 6:
-            document.getElementById("imagep6").setAttribute("src", imgUrl);
-            break;
+  map.addInteraction(translate1);
 
-          case 7:
-            document.getElementById("imagep7").setAttribute("src", imgUrl);
-            break;
-
-          case 8:
-            document.getElementById("imagep8").setAttribute("src", imgUrl);
-            break;
-          case 9:
-            document.getElementById("imagep9").setAttribute("src", imgUrl);
-            break;
-          case 10:
-            document.getElementById("imagep10").setAttribute("src", imgUrl);
-            break;
-        }
-
-        // NOTE should work but don't
-
-        //   console.log(photos.length);
-        // myimagep = eval(`imagep${i}`);
-        // console.log(myimagep);
-        // document.getElementById(myimagep).setAttribute("src", img);
-      }
-    });
-}
+  // After the mouse click the following function is executed which updates the displayed lat and long
+  map.on("click", function (e) {
+    var coordinate = e.coordinate;
+    var lngLat = ol.proj.toLonLat(coordinate);
+    marker1.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(lngLat)));
+    coordinates.style.display = "block";
+    coordinates.innerHTML =
+      "Latitude: " + lngLat[1] + "<br />Longitude: " + lngLat[0];
+  });
+});

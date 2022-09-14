@@ -1,5 +1,6 @@
 const key = "DOEEESf7yldIWHelbTOJkQ3KzaxXWrA7";
 let map;
+var lolang;
 
 function locationMap() {
   L.mapquest.key = key;
@@ -18,7 +19,7 @@ function locationMap() {
 function createMap(error, response) {
   const location = response.results[0].locations[0];
   const latLng = location.displayLatLng;
-  console.log(latLng);
+  lolang = location;
   if (map) {
     map.setView(latLng, 14);
   } else {
@@ -31,6 +32,7 @@ function createMap(error, response) {
 }
 
 document.getElementById("btn_seach").addEventListener("click", locationMap);
+console.log(lolang);
 
 const clear = function () {
   document.getElementById("map").remove();
